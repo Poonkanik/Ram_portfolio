@@ -20,20 +20,13 @@ async function sendContactEmail(formData) {
       return await res.json();
     }
 
-    // If 404 (pure static host with no serverless handler), fallback to FormSubmit
-    if (res.status === 404) {
-      console.info("Static hosting detected without serverless handler; routing via FormSubmit fallback.");
-      return await sendViaFormSubmit(formData);
-    }
-
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData.error || `Delivery failed: ${res.status}`);
+    // If serverless endpoint fails for any reason, fallback to direct FormSubmit
+    console.info("Primary serverless handler returned error; falling back to direct FormSubmit dispatch.");
+    return await sendViaFormSubmit(formData);
   } catch (error) {
-    // If network error occurred trying /api/send-email on pure static host
-    if (error.message && error.message.includes("Failed to fetch")) {
-      return await sendViaFormSubmit(formData);
-    }
-    throw error;
+    // If network error occurred trying /api/send-email
+    console.info("Network error on serverless endpoint; falling back to direct FormSubmit dispatch.", error);
+    return await sendViaFormSubmit(formData);
   }
 }
 
