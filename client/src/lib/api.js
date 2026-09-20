@@ -20,11 +20,10 @@ async function sendContactEmail(formData) {
       return await res.json();
     }
 
-    // If serverless endpoint fails for any reason, fallback to direct FormSubmit
-    console.info("Primary serverless handler returned error; falling back to direct FormSubmit dispatch.");
+    const errData = await res.json().catch(() => ({}));
+    console.warn("Primary endpoint /api/send-email failed:", res.status, errData);
     return await sendViaFormSubmit(formData);
   } catch (error) {
-    // If network error occurred trying /api/send-email
     console.info("Network error on serverless endpoint; falling back to direct FormSubmit dispatch.", error);
     return await sendViaFormSubmit(formData);
   }
@@ -60,8 +59,10 @@ async function sendViaFormSubmit(formData) {
   });
 
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.message || "Failed to submit message");
+  if (!response.ok || data.success === "false" || data.success === false) {
+    throw new Error(
+      data.message || "Unable to deliver message. Please email directly to ramshan081@gmail.com."
+    );
   }
   return { success: true, id: data.id || "fs-sent" };
 }

@@ -74,11 +74,13 @@ export default async function handler(req, res) {
         if (response.ok) {
           return res.status(200).json({ success: true, id: data.id, provider: "resend" });
         }
-        console.warn("Resend rejected delivery, routing to FormSubmit fallback:", data);
+        console.warn("Resend rejected delivery, routing to fallback:", data);
       } catch (err) {
-        console.warn("Resend error, routing to FormSubmit fallback:", err.message);
+        console.warn("Resend error, routing to fallback:", err.message);
       }
     }
+
+
 
     // Seamless fallback to FormSubmit: delivers straight to ramshan081@gmail.com with 100% reliability
     const fallbackResponse = await fetch("https://formsubmit.co/ajax/ramshan081@gmail.com", {

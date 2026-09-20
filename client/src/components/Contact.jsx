@@ -139,6 +139,18 @@ export default function Contact() {
             <div className="info-row">
               <span className="dot" />
               <div>
+                <span>Direct Email</span>
+                <a
+                  href="mailto:ramshan081@gmail.com"
+                  style={{ color: "#38bdf8", textDecoration: "none", fontWeight: 600 }}
+                >
+                  ramshan081@gmail.com
+                </a>
+              </div>
+            </div>
+            <div className="info-row">
+              <span className="dot" />
+              <div>
                 <span>Location</span>
                 <strong>{profile.location}</strong>
               </div>
@@ -169,7 +181,7 @@ export default function Contact() {
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
                     <polyline points="22 4 12 14.01 9 11.01" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                  <strong style="font-size: 16px;">Message successfully sent!</strong>
+                  <strong style={{ fontSize: "16px" }}>Message successfully sent!</strong>
                 </div>
                 <p style={{ margin: 0, color: "#e2e8f0" }}>
                   Thank you for reaching out. Your note has been delivered to Dr. Ramkumar's inbox
@@ -334,7 +346,20 @@ export default function Contact() {
                     </svg>
                     <div>
                       <strong>Unable to send message:</strong>
-                      <p style={{ margin: "4px 0 0" }}>{errorMessage}</p>
+                      <p style={{ margin: "4px 0 8px" }}>{errorMessage}</p>
+                      <p style={{ margin: 0, fontSize: "13px" }}>
+                        Alternatively, you can email directly:{" "}
+                        <a
+                          href={`mailto:ramshan081@gmail.com?subject=Inquiry%20from%20Portfolio%20(${encodeURIComponent(
+                            form.name || "Visitor"
+                          )})&body=${encodeURIComponent(
+                            `Name: ${form.name}\nEmail: ${form.email}\nInstitution: ${form.institution}\nReason: ${form.reason}\n\nMessage:\n${form.message}`
+                          )}`}
+                          style={{ color: "#38bdf8", textDecoration: "underline" }}
+                        >
+                          Send directly to ramshan081@gmail.com
+                        </a>
+                      </p>
                     </div>
                   </div>
                 )}

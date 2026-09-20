@@ -6,10 +6,11 @@ import Guidance from "./components/Guidance.jsx";
 import Achievements from "./components/Achievements.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
+import { ErrorBoundary } from "./components/ErrorBoundary.jsx";
 
 export default function App() {
   return (
-    <>
+    <ErrorBoundary>
       <Navbar />
       <main>
         <Hero />
@@ -18,9 +19,11 @@ export default function App() {
         <Publications />
         <Guidance />
         <Achievements />
-        <Contact />
+        <ErrorBoundary>
+          <Contact />
+        </ErrorBoundary>
       </main>
       <Footer />
-    </>
+    </ErrorBoundary>
   );
 }
